@@ -1,34 +1,22 @@
 #[macro_use] extern crate rocket;
-mod service;
-mod repository;
 
-use service::userservice::check_login;
+
+
+pub mod controller {
+    pub mod usercontroller;
+}
+
+pub mod service{
+    pub mod userservice;
+}
+
+pub mod model{
+    pub mod usermodel;
+}
 
 use rocket::http::Status;
-
-#[derive(serde::Deserialize)]
-struct User {
-    username: String,
-    password: String,
-    email: String
-}
-
-
-#[derive(serde::Deserialize, Debug)]
-struct Login {
-    username: String,
-    password: String
-}
-
-
-
-#[post("/login", data= "<data>")]
-async fn login(data: rocket::serde::json::Json<Login>)-> Status{
-    println!("{:?}", data);
-    check_login().await
-}
-
-
+use crate::controller::usercontroller::login;
+use crate::service::userservice::check_login;
 
 
 
