@@ -7,8 +7,9 @@ use rocket::outcome::Outcome::Error;
 use rocket::Request;
 use rocket::request::{FromRequest, Outcome};
 
+
 use crate::model;
-use crate::model::usermodel::Token;
+use crate::model::usermodel::{Payload, Token};
 
 pub struct JwtAuth;
 
@@ -27,8 +28,15 @@ impl<'r> FromRequest<'r> for JwtAuth{
                 let val = env::var(key).unwrap();
                 let secret = DecodingKey::from_secret(val.as_ref());
                 let validation = Validation::new(HS256);
-                match decode::<Token>{token&, &Validation::new(Algorithm::HS256)  }
+                match decode::<Payload>{token&, &Validation::new(Algorithm::HS256)  }
             }
         }
     }
+}
+
+
+
+pub fn create_jwt(id:i32) -> Result<String, Error>{
+    let expiration_date = UT
+    todo!()
 }

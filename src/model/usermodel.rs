@@ -20,11 +20,12 @@ pub struct User {
     email: String
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Payload{
-    username:String,
-    email: String,
-    admin: bool,
+#[derive(Debug,Deserialize,Serialize)]
+pub struct Claims{
+    pub subject_id: i32,
     exp: usize
 }
 
+pub struct JWT{
+    pub claims: Claims
+}
