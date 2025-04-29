@@ -14,9 +14,17 @@ pub struct LoginResponse{
 
 
 #[derive(Deserialize, Serialize)]
-struct User {
+pub struct User {
     username: String,
     password: String,
     email: String
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Payload{
+    username:String,
+    email: String,
+    admin: bool,
+    exp: usize
 }
 

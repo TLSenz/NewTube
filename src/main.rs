@@ -14,6 +14,10 @@ pub mod model{
     pub mod usermodel;
 }
 
+pub mod security{
+    pub mod authentication;
+}
+
 use rocket::http::Status;
 use crate::controller::usercontroller::login;
 use crate::service::userservice::check_login;
