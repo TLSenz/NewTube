@@ -15,17 +15,45 @@ pub struct LoginResponse{
 
 #[derive(Deserialize, Serialize)]
 pub struct User {
-    username: String,
-    password: String,
-    email: String
+    pub id:  i32,
+    pub username: String,
+    pub password: String,
+    pub email: String
 }
 
 #[derive(Debug,Deserialize,Serialize)]
 pub struct Claims{
     pub subject_id: i32,
-    exp: usize
+    pub(crate) exp: usize
 }
 
 pub struct JWT{
     pub claims: Claims
+}
+
+
+#[derive(Responder, Debug)]
+pub enum NetworkResponse {
+    #[response(status = 201)]
+    Created(String),
+    #[response(status = 400)]
+    BadRequest(String),
+    #[response(status = 401)]
+    Unauthorized(String),
+    #[response(status = 404)]
+    NotFound(String),
+    #[response(status = 409)]
+    Conflict(String),
+}
+
+#[derive(Serialize)]
+pub enum ResponseBody {
+    Message(String),
+    AuthToken(String),
+}
+
+#[derive(Serialize)]
+#[serde(crate = "rocket::serde")]
+pub struct Response {
+    pub body: ResponseBody,
 }

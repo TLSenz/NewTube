@@ -3,7 +3,6 @@ use crate::service::userservice;
 use crate::service::userservice::check_login;
 use crate::model::usermodel::LoginInfo;
 
-git
 
 
 

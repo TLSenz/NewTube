@@ -1,6 +1,6 @@
 #[macro_use] extern crate rocket;
 
-
+use dotenv::dotenv;
 
 pub mod controller {
     pub mod usercontroller;
@@ -26,5 +26,6 @@ use crate::service::userservice::check_login;
 
 #[launch]
 fn rocket() -> _ {
+    dotenv().ok();
     rocket::build().mount("/", routes![login])
 }
