@@ -439,7 +439,11 @@ version = "2.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34d3950690ba3a6910126162b47e775e203006d4242a15de912bec6c0a695153"
 dependencies = [
+ "bitflags",
+ "byteorder",
  "diesel_derives",
+ "itoa",
+ "pq-sys",
 ]
 
 [[package]]
@@ -1541,6 +1545,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "85eae3c4ed2f50dcfe72643da4befc30deadb458a9b590d720cde2f2b1e97da9"
 dependencies = [
  "zerocopy",
+]
+
+[[package]]
+name = "pq-sys"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41c852911b98f5981956037b2ca976660612e548986c30af075e753107bc3400"
+dependencies = [
+ "libc",
+ "vcpkg",
 ]
 
 [[package]]

@@ -17,6 +17,8 @@ pub mod model{
 pub mod security{
     pub mod authentication;
 }
+pub mod lib;
+pub mod schema;
 
 use rocket::http::Status;
 use crate::controller::usercontroller::login;

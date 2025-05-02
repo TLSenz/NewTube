@@ -1,4 +1,11 @@
 use serde::{Serialize,Deserialize};
+use diesel::prelude::*;
+
+use rocket::response::Responder;
+
+use crate::schema::posts;
+
+
 #[derive(Deserialize, Debug)]
 pub struct LoginInfo{
     pub username: String,
@@ -56,4 +63,31 @@ pub enum ResponseBody {
 #[serde(crate = "rocket::serde")]
 pub struct Response {
     pub body: ResponseBody,
+}
+
+
+
+
+
+#[derive(Insertable)]
+#[diesel(table_name = posts)]
+pub struct NewPost<'a> {
+    pub title: &'a str,
+    pub body: &'a str,
+}
+
+
+
+
+
+
+
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct Post {
+    pub id: i32,
+    pub title: String,
+    pub body: String,
+    pub published: bool,
 }
