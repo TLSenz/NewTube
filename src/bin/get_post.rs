@@ -1,6 +1,4 @@
 use diesel::prelude::*;
-use diesel::prelude::*;
-use diesel::expression_methods::ExpressionMethods;
 
 
 use std::env::args;

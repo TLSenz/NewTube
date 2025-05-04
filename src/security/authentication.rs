@@ -5,7 +5,6 @@ use rocket::Request;
 use rocket::request::{FromRequest, Outcome};
 use chrono::Utc;
 
-use crate::model;
 use crate::model::usermodel::{Claims, NetworkResponse, Response, ResponseBody, JWT};
 
 pub struct JwtAuth;

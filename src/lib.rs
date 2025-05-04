@@ -1,17 +1,44 @@
 use diesel::prelude::*;
 use std::env;
 use dotenv::dotenv;
-use crate::model::usermodel::{NewPost, Post};
+
 use crate::schema::posts;
 use diesel::pg::PgConnection;
+use crate::model::usermodel::{NewPost, Post};
+// für deinen eigenen Code
 
+#[macro_use] extern crate rocket;
+
+
+pub mod controller {
+    pub mod usercontroller;
+}
+
+pub mod service{
+    pub mod userservice;
+}
 
 pub mod model{
     pub mod usermodel;
 }
+
+pub mod security{
+    pub mod authentication;
+}
+
 pub mod schema;
 
 
+use crate::controller::usercontroller::login;
+
+
+
+
+#[launch]
+pub fn rocket() -> _ {
+    dotenv().ok();
+    rocket::build().mount("/", routes![login])
+}
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
 
@@ -20,9 +47,7 @@ pub fn establish_connection() -> PgConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-fn main() {
 
-}
 
 
 
@@ -37,3 +62,4 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
         .get_result(conn)
         .expect("Error saving new post")
 }
+

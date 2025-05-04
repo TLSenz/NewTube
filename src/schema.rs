@@ -8,3 +8,17 @@ diesel::table! {
         published -> Bool,
     }
 }
+
+diesel::table! {
+    users (id) {
+        id -> Int4,
+        username -> Text,
+        email -> Text,
+        password -> Text,
+    }
+}
+
+diesel::allow_tables_to_appear_in_same_query!(
+    posts,
+    users,
+);
