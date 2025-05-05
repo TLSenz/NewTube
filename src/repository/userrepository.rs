@@ -7,6 +7,8 @@ use crate::establish_connection;
 use crate::model::usermodel::{LoginInfo, NewUser, User};
 use crate::schema::users::dsl::users;
 use crate::schema::users::password;
+use crate::schema::users::dsl::*;
+
 
 pub fn get_user(id: i32) -> Result<User,Error>{
 
@@ -34,14 +36,14 @@ pub fn get_user(id: i32) -> Result<User,Error>{
     }
 
 
-pub fn check_user(login_data :LoginInfo) -> Result<User,Error>{
+pub async  fn check_user(login_data :LoginInfo) -> Result<User,Error>{
 
-    let conn = &mut establish_connection();
+    let connection = &mut establish_connection();
 
     let user = users
-        .filter(&login_data.username)
+        .filter(username.eq(&login_data.username))
         .select(User::as_select())
-        .first(conn)
+        .first(connection)
         .optional();
 
     match user {
@@ -72,15 +74,15 @@ pub fn check_user(login_data :LoginInfo) -> Result<User,Error>{
 
 
 
-pub fn create_user(conn: &mut PgConnection, username: &str, passwort: &str, email: &str) -> User{
+pub fn create_user(conn: &mut PgConnection, user_name: &str, passwort: &str, emaill: &str) -> User{
 
     let hashed_password = hash(passwort, 12).expect("Could not Hash");
 
 
     let new_user = NewUser {
-        username: username,
+        username: &user_name,
         password: &hashed_password,
-        email: email,
+        email: emaill,
     };
 
 

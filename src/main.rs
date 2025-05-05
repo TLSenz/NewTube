@@ -1,5 +1,5 @@
 
 #[tokio::main]
 async fn main() {
-    NewTube::rocket().launch().await;
+    let _ = NewTube::rocket().launch().await;
 }

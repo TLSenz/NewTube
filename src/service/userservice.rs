@@ -16,11 +16,15 @@ pub async fn check_login(login_data: LoginInfo, ) -> Option<LoginResponse>{
             match jwt_token {
                 Ok(token) => {
                     let response:LoginResponse = LoginResponse{ jwt_access_token:  token};
+                    Option::from(response)
                 }
                 Err(E) => {
                     None
                 }
             }
+        }
+        _ => {
+            None
         }
     }
 
