@@ -30,7 +30,7 @@ pub struct User {
     pub email: String
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Deserialize, Serialize)]
 #[diesel(table_name = users)]
 pub struct NewUser<'a> {
     pub username: &'a str,

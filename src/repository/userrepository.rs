@@ -76,12 +76,12 @@ pub async  fn check_user(login_data :LoginInfo) -> Result<User,Error>{
 
 pub fn create_user(conn: &mut PgConnection, user_name: &str, passwort: &str, emaill: &str) -> User{
 
-    let hashed_password = hash(passwort, 12).expect("Could not Hash");
+ //   let hashed_password = hash(passwort, 12).expect("Could not Hash");
 
 
     let new_user = NewUser {
         username: &user_name,
-        password: &hashed_password,
+        password: passwort,
         email: emaill,
     };
 

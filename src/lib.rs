@@ -34,14 +34,14 @@ pub mod security{
 pub mod schema;
 
 
-use crate::controller::usercontroller::login;
+use crate::controller::usercontroller::{login, signup};
 use crate::schema::users::dsl::users;
 use crate::schema::users::password;
 
 #[launch]
 pub fn rocket() -> _ {
     dotenv().ok();
-    rocket::build().mount("/", routes![login])
+    rocket::build().mount("/", routes![login,signup])
 }
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
