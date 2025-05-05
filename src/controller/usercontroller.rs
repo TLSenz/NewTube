@@ -1,6 +1,8 @@
+use std::result;
 use rocket::http::Status;
+use rocket::serde::json::Json;
 use crate::service::userservice::check_login;
-use crate::model::usermodel::LoginInfo;
+use crate::model::usermodel::{LoginInfo, LoginResponse};
 
 
 
@@ -10,8 +12,12 @@ use crate::model::usermodel::LoginInfo;
 
 
 
-#[post("/login", data= "<data>")]
-pub async fn login(data: rocket::serde::json::Json<LoginInfo>) -> Status{
-    println!("{:?}", data);
-    check_login().await
+#[post("/login", data = "<data>")]
+pub async fn login(data: Json<LoginInfo>) -> Result<Json<LoginResponse>, Status> {
+    let result = check_login(data.into_inner()).await;
+
+    match result {
+        Some(response) => Ok(Json(response)),
+        None => Err(Status::Unauthorized),
+    }
 }

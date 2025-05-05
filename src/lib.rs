@@ -1,10 +1,11 @@
 use diesel::prelude::*;
 use std::env;
+use diesel::associations::HasTable;
 use dotenv::dotenv;
 
 use crate::schema::posts;
 use diesel::pg::PgConnection;
-use crate::model::usermodel::{NewPost, Post};
+use crate::model::usermodel::{NewPost, NewUser, Post, User};
 // für deinen eigenen Code
 
 #[macro_use] extern crate rocket;
@@ -12,6 +13,10 @@ use crate::model::usermodel::{NewPost, Post};
 
 pub mod controller {
     pub mod usercontroller;
+}
+
+pub mod repository{
+    pub mod userrepository;
 }
 
 pub mod service{
@@ -30,9 +35,8 @@ pub mod schema;
 
 
 use crate::controller::usercontroller::login;
-
-
-
+use crate::schema::users::dsl::users;
+use crate::schema::users::password;
 
 #[launch]
 pub fn rocket() -> _ {
@@ -62,4 +66,8 @@ pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
         .get_result(conn)
         .expect("Error saving new post")
 }
+
+
+
+
 
