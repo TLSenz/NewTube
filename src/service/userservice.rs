@@ -7,30 +7,32 @@ use crate::repository::userrepository::{check_user, create_user, get_user};
 use crate::security::authentication::create_jwt;
 use crate::model::usermodel::User;
 
-pub async fn check_login(login_data: LoginInfo, ) -> Option<LoginResponse>{
+pub async fn check_login(login_data: LoginInfo) -> Option<LoginResponse> {
+    let result =
+        check_user(login_data.clone()).await;
 
-    let result = check_user(login_data).await;
-
-    match result{
-        Ok(user) => {
-           let jwt_token  = create_jwt(user.id);
-            match jwt_token {
-                Ok(token) => {
-                    let response:LoginResponse = LoginResponse{ jwt_access_token:  token};
-                    Option::from(response)
-                }
-                Err(E) => {
-                    None
+        println!("Result: {}", result);
+        if result{
+            println!("HEllo world");
+            let token = create_jwt(login_data.username);
+            match token {
+                Ok(token) =>{
+                    println!("token");
+                    Some(LoginResponse{ jwt_access_token: token.to_string() })
+                },
+                Err(Error) => {
+                    println!("Error: {}", Error);
+                   None
                 }
             }
         }
-        _ => {
+        else {
             None
         }
-    }
-
 
 }
+
+
 
 pub async fn sing_up_user(user: NewUser<'_>) -> User{
 

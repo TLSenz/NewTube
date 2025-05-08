@@ -1,26 +1,33 @@
 use serde::{Serialize,Deserialize};
 use diesel::prelude::*;
-
+use std::fmt::Display;
 use rocket::response::Responder;
 
 use crate::schema::posts;
 use crate::schema::users;
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct LoginInfo{
     pub username: String,
     pub password: String
 
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 pub struct LoginResponse{
     pub jwt_access_token: String,
 }
+#[derive(Insertable)]
+#[diesel(table_name = users)]
+pub struct NewUserOwned {
+    pub username: String,
+    pub password: String,
+    pub email: String,
+}
 
 
-#[derive(Queryable, Selectable,Serialize,Deserialize)]
+#[derive(Queryable, Selectable, Serialize, Deserialize, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
@@ -39,7 +46,7 @@ pub struct NewUser<'a> {
 }
 #[derive(Debug,Deserialize,Serialize)]
 pub struct Claims{
-    pub subject_id: i32,
+    pub username: String,
     pub(crate) exp: usize
 }
 pub struct JWT{

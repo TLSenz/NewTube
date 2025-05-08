@@ -49,15 +49,17 @@ impl<'r> FromRequest<'r> for JWT {
     }
 }
 
-pub fn create_jwt(id: i32) -> Result<String, Box<dyn std::error::Error>> {
+pub fn create_jwt(username: String) -> Result<String, Box<dyn std::error::Error>> {
     let secret = env::var("JWT_SECRET")?;
+    println!("JWT_SECRET: {:?}", env::var("JWT_SECRET"));
+
     let expiration_date = Utc::now()
         .checked_add_signed(chrono::Duration::minutes(60))
         .unwrap()
         .timestamp();
 
     let claims = Claims {
-        subject_id: id,
+        username,
         exp: expiration_date as usize,
     };
 

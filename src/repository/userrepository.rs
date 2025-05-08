@@ -36,39 +36,55 @@ pub fn get_user(id: i32) -> Result<User,Error>{
     }
 
 
-pub async  fn check_user(login_data :LoginInfo) -> Result<User,Error>{
+pub async  fn check_user(login_data :LoginInfo) -> bool{
 
-    let connection = &mut establish_connection();
 
-    let user = users
-        .filter(username.eq(&login_data.username))
-        .select(User::as_select())
-        .first(connection)
-        .optional();
+    let user = rocket::tokio::task::spawn_blocking(move || {
+        let connection = &mut establish_connection();
+
+        let user = users
+            .filter(username.eq(&login_data.username))
+            .select(User::as_select())
+            .first(connection)
+            .optional();
+
+
+
+    user
+
+    }).await;
+
+    println!("User : {:?}", user);
 
     match user {
-        Ok(Some(user)) => {
-            if user.password == login_data.password{
-                Ok(user)
-            }
-            else {
-                Err(Error)
-            }
-        },
-        Ok(None) => {
-            println!("No User with this id");
-            Err(Error)
+        Ok(inner_result) => {
+            match inner_result {
+            Ok(Some(user)) => {
+                println!("Got User from Database User: {:?}", user);
+                println!("user password: {}", user.password);
+                println!("login password: {}", login_data.password);
+                if user.password.to_string().eq(&login_data.password.to_string()) {
+                    println!("Hello");
 
-        },
-        Err(E) => {
-            println!("Could not connect with Database");
-            Err(Error)
+                  true
+                } else {
+                    false
+                }
+            },
+            Ok(None) => {
+                println!("No User with this id");
+               false
+            },
+            Err(E) => {
+                println!("Could not connect with Database");
+                false
+            }
+            }
+        }
+        _ => {
+          false
         }
     }
-
-
-
-
 
 }
 
@@ -89,7 +105,7 @@ pub fn create_user(conn: &mut PgConnection, user_name: &str, passwort: &str, ema
     diesel::insert_into(users::table())
         .values(new_user)
         .returning(User::as_returning())
-        .get_result(conn)
+        .get_result::<User>(conn)
         .expect("Error Creating New User ")
 
 }
