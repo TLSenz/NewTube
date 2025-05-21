@@ -38,7 +38,6 @@ pub fn get_user(id: i32) -> Result<User,Error>{
 
 pub async  fn check_user(login_data :LoginInfo) -> bool{
 
-
     let user = rocket::tokio::task::spawn_blocking(move || {
         let connection = &mut establish_connection();
 

@@ -1,11 +1,13 @@
 
 use rocket::http::Status;
+use rocket::Request;
 use serde::__private::ser::FlatMapSerializeTupleVariantAsMapValue;
 use crate::establish_connection;
 use crate::model::usermodel::{LoginInfo, LoginResponse, NewUser};
 use crate::repository::userrepository::{check_user, create_user, get_user};
 use crate::security::authentication::create_jwt;
 use crate::model::usermodel::User;
+use crate::model::videomodel::UploadRequest;
 
 pub async fn check_login(login_data: LoginInfo) -> Option<LoginResponse> {
     let result =
@@ -52,5 +54,11 @@ pub async fn sing_up_user(user: NewUser<'_>) -> User{
 
 
     result.unwrap()
+
+}
+
+
+
+pub async fn insert_video(request: UploadRequest){
 
 }

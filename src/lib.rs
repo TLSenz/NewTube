@@ -13,6 +13,7 @@ use crate::model::usermodel::{NewPost, NewUser, Post, User};
 
 pub mod controller {
     pub mod usercontroller;
+    pub mod videocontroller;
 }
 
 pub mod repository{
@@ -25,6 +26,7 @@ pub mod service{
 
 pub mod model{
     pub mod usermodel;
+    pub mod videomodel;
 }
 
 pub mod security{
